@@ -1,0 +1,374 @@
+{% include 'base.html' %} 
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    /* Card del formulario */
+    .card.bg-gd-sea {
+        background-color: rgba(0, 0, 0, 0.8) !important; /* Fondo oscuro */
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        padding: 30px;
+        color: #ffffff !important; /* Texto blanco */
+    }
+
+    /* Estilo de las opciones dentro del combo */
+    .card.bg-gd-sea select option {
+        background-color: #1c1c1c; /* Fondo oscuro para las opciones */
+        color: #ffffff; /* Texto blanco */
+    }
+    /* Hover en las opciones (en navegadores que lo soportan) */
+    .card.bg-gd-sea select option:hover {
+        background-color: #333;
+    }
+
+    /* Formulario dentro de la card */
+    .card.bg-gd-sea form {
+        background-color: transparent;
+        
+    }
+
+    /* Labels en blanco */
+    .card.bg-gd-sea label {
+        color: #ffffff !important;
+        font-weight: 500;
+    }
+
+    /* Inputs, selects, textarea */
+    .card.bg-gd-sea input,
+    .card.bg-gd-sea select,
+    .card.bg-gd-sea textarea {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid #444 !important;
+        border-radius: 8px !important;
+        padding: 10px 12px !important;
+        color: #ffffff !important;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .card.bg-gd-sea input::placeholder,
+    .card.bg-gd-sea textarea::placeholder {
+        color: #ccc !important;
+    
+    }
+
+    /* Botón guardar */
+    .card.bg-gd-sea .btn-success {
+        display: block;
+                margin: 20px auto 0 auto; /* centrado horizontal */
+                background: linear-gradient(135deg, #4CAF50, #81C784);
+                border: none;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                padding: 10px 25px;
+                transition: all 0.3s ease; 
+    }
+
+    .card.bg-gd-sea .btn-success:hover {
+        background: linear-gradient(135deg, #45a049, #66bb6a);
+        transform: translateY(-2px);
+    }
+
+    /* Tabla y calendario */
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: white;
+        z-index: 2;
+    }
+
+    .table th {
+        position: sticky;
+        top: 0;
+        background-color: #343a40;
+        color: white;
+        z-index: 1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #calendario-asistencias {
+        max-width: 100%;
+        height: 350px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow-y: auto;
+    }
+
+    .fc-event-background { 
+        opacity: 1 !important;
+    }
+
+    .fc-daygrid-day-number {
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 2px 4px;
+    }
+
+
+
+
+    /* Selector de fecha */
+    .card.bg-gd-sea input[type="date"] {
+        background-color: rgba(255, 255, 255, 0.05) !important; /* Fondo igual a los otros inputs */
+        color: #ffffff !important; /* Texto blanco */
+        border: 1px solid #444 !important;
+        border-radius: 8px !important;
+        padding: 10px 12px !important;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    /* Cambiar color del icono del calendario (Chrome, Edge, Safari) */
+    .card.bg-gd-sea input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* Icono blanco */
+        cursor: pointer;
+    }
+
+    /* Cambiar color del placeholder si lo tiene */
+    .card.bg-gd-sea input[type="date"]::placeholder {
+        color: #ccc !important;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <!-- Columna para el Formulario de Suscripción -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg w-100 bg-gd-sea">
+                <div class="card-body text-white">
+                    <form method="post" id="SubscripcionForm">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="btn btn-success btn-lg rounded-pill px-5" type="submit">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna para el Historial de Suscripciones y Calendario -->
+        <div class="col-md-6">
+
+            <!-- Historial -->
+            <h3>Historial de Suscripciones</h3>
+            <div class="table-responsive" style="max-height: 200px; overflow-y: auto; position: relative;">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-dark sticky-header">
+                        <tr>
+                            <th>Plan</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in historial %}
+                        <tr>
+                            <td>{{ sub.plan.Nombre }}</td>
+                            <td>{{ sub.fecha_inicio }}</td>
+                            <td>{{ sub.fecha_fin|default:"En curso" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No hay suscripciones previas.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Calendario debajo -->
+            <div class="mt-4">
+                <h3>Asistencias del Socio</h3>
+                <div id="calendario-asistencias"></div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+
+<!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<!-- Incluí estas librerías si no lo hiciste aún -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const calendarioEl = document.getElementById('calendario-asistencias');
+
+    const calendario = new FullCalendar.Calendar(calendarioEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        height: 350,
+        fixedWeekCount: false,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: ''
+        },
+        events: [
+            // Asistencias
+            {% for asistencia in asistencias %}
+            {
+                title: 'Asistencia',
+                start: '{{ asistencia.fecha_asistencia|date:"Y-m-d" }}',
+                color: '#1ab207',
+                textColor: '#fff',
+                extendedProps: { icon: '✔️' }
+            },
+            {% endfor %}
+
+            // Subscripciones
+            {% for sub in subscripciones %}
+            {
+                display: 'background',
+                backgroundColor: '#0048b3',
+            },
+            {
+                title: 'Subscripción',
+                start: '{{ sub.fecha_inicio|date:"Y-m-d" }}',
+                color: '#0048b3',
+                textColor: '#fff',
+                extendedProps: { icon: '🎯' }
+            },
+            {% endfor %}
+        ],
+        eventDidMount: function(info) {
+            // Agregar icono al título si existe
+            if (info.event.extendedProps.icon) {
+                let iconSpan = document.createElement('span');
+                iconSpan.textContent = info.event.extendedProps.icon + ' ';
+                iconSpan.style.marginRight = '4px';
+                info.el.querySelector('.fc-event-title').prepend(iconSpan);
+            }
+        }
+    });
+
+    calendario.render();
+});
+</script>
+
+    
+<script>
+    let valor_plan = 0;  // Variable para almacenar el valor original del plan
+    let valor_pagado = 0;  // Variable para almacenar el monto pagado
+
+
+     // Función para formatear números como dinero (en pesos)
+    function formatearDinero(valor) {
+        return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' }); // Usar el formato de dinero en pesos
+    }
+
+    // Evento para cuando se cambia el plan
+    document.getElementById('id_plan').addEventListener('change', function() {
+        const planId = this.value;
+        if (planId) {
+            fetch(`/obtener_detalles_plan/${planId}/`) 
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        // Guardamos el valor original del plan
+                        valor_plan = parseFloat(data.monto); // Valor original del plan
+                        document.getElementById('id_monto').value = valor_plan; // Establecer el valor del plan en el campo "Monto"
+                        document.getElementById('id_dias').value = data.dias;  // Establecer los días
+                        
+                        // Resetear el saldo a 0 cuando se selecciona un plan
+                        document.getElementById('id_saldo').value = '0'; 
+
+                        recalcularSaldo(); // Llamamos a la función para recalcular el saldo
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            valor_plan = 0;
+            document.getElementById('id_monto').value = '';
+            document.getElementById('id_dias').value = '';
+            document.getElementById('id_saldo').value = ''; // Limpiar el saldo
+            recalcularSaldo(); // Recalcular saldo
+        }
+    });
+
+    // Función para recalcular el saldo basado en el valor ingresado en "Monto"
+    function recalcularSaldo() {
+        const montoInput = document.getElementById('id_monto').value;
+        valor_pagado = parseFloat(montoInput) || 0; // Si no es numérico, lo establecemos a 0
+
+        // Calculamos el saldo como la diferencia entre el monto pagado y el valor original del plan
+        const saldo =  valor_plan - valor_pagado ;
+
+        // Asignamos el saldo calculado al campo correspondiente
+        document.getElementById('id_saldo').value = saldo.toFixed(2); // Mostrar el saldo con dos decimales
+    }
+
+    // Evento para recalcular el saldo cuando el monto se modifica
+    document.getElementById('id_monto').addEventListener('input', function() {
+        const montoInput = parseFloat(this.value);
+
+        // Validación para que el monto no supere el valor original del plan
+        if (montoInput > valor_plan) {
+            alert("El monto no puede superar el valor del plan.");
+            // Restablecer el valor al valor original del plan
+            document.getElementById('id_monto').value = valor_plan;
+            recalcularSaldo(); // Recalcular el saldo
+        } else {
+            recalcularSaldo(); // Recalcular el saldo si la validación es correcta
+        }
+    });
+
+    // Función para sumar un mes a una fecha
+    function sumarUnMes(fecha) {
+        const fechaInicio = new Date(fecha);
+        const nuevoMes = fechaInicio.getMonth() + 1; // Sumar un mes
+        fechaInicio.setMonth(nuevoMes);
+
+        // Ajuste si el día no existe en el nuevo mes (p.ej., del 31 al 30)
+        if (fechaInicio.getMonth() !== (nuevoMes % 12)) {
+            fechaInicio.setDate(0); // Establecer al último día del mes anterior
+        }
+
+        return fechaInicio.toISOString().split('T')[0]; // Convertir a formato YYYY-MM-DD
+    }
+
+    // Función para actualizar automáticamente la fecha de fin
+    function actualizarFechaFin() {
+        const fechaInicio = document.getElementById('id_fecha_inicio').value;
+        if (fechaInicio) {
+            const fechaFin = sumarUnMes(fechaInicio); // Calcular la fecha de fin
+            document.getElementById('id_fecha_fin').value = fechaFin; // Asignar al campo de fecha de fin
+        } else {
+            document.getElementById('id_fecha_fin').value = ''; // Vaciar si no hay fecha de inicio
+        }
+    }
+
+    // Ejecutar al cambiar el valor de la fecha de inicio
+    document.getElementById('id_fecha_inicio').addEventListener('change', actualizarFechaFin);
+
+    // Ejecutar al cargar la página si la fecha de inicio ya tiene un valor
+    window.addEventListener('load', actualizarFechaFin);
+
+</script>
+
+{% endblock %}

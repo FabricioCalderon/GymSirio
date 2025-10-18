@@ -1,0 +1,216 @@
+{% include 'base.html' %}
+{% block content %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Profesores</title>
+    <link rel="stylesheet" id="css-main" href="{% static 'css1/codebase.min.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            margin: 0;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 550px;
+        position: relative;
+    }
+
+    /* Estilo para el popup de mensaje centrado */
+    #mensajePopup {
+        display: none;
+        position: absolute;
+        top: 10px; /* Distancia del mensaje desde la parte superior del formulario */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        z-index: 1050;
+        font-weight: bold;
+    }
+
+    .card-body {
+        position: relative;
+    }
+    #dni::placeholder {
+        color: black; /* Cambia el color del texto del placeholder */
+        opacity: 1; /* Asegura que el color sea completamente visible */
+    }
+</style>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-80">
+        <div class="card shadow-lg w-100 form-container">
+            <div class="card-header text-white text-center fw-bold py-3"
+                style="background: linear-gradient(45deg, #007bff, #0056b3); border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h2 class="mb-0 d-flex align-items-center justify-content-center">
+                    <i class="fas fa-user-check me-2"></i> Registro de Profesores
+                </h2>
+            </div>
+            <div class="card-body">
+                <form id="profesorForm">
+                    <!-- DNI -->
+                    <div class="form-group mb-3">
+                        <label for="dni" class="fs-5 fw-bold" style="color: #007bff;">DNI:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #007bff; border-color: #ffffff;">
+                                <i class="fas fa-id-card"></i>
+                            </span>
+                            <input type="text" id="dni" name="dni" class="form-control form-control-lg" required 
+                                placeholder="Ingrese su DNI" 
+                                autocomplete="off"
+                                style="border-color: #007bff; background-color: #6da1f0; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+
+                     <!-- Nombre del Profe -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="nombreInput" style="color: #28a745;">Profe:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #28a745; border-color: #ffffff;">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" id="nombreInput" class="form-control form-control-lg" readonly 
+                                placeholder="" 
+                                style="border-color: #28a745; background-color: #5cec7e; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+
+                    <!-- Hora de ingreso -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="horaIngresoInput" style="color: #ff9800;">Hora de Ingreso:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #ff9800; border-color: #ffffff;"><i class="fas fa-clock"></i></span>
+                            <input type="text" id="horaIngresoInput" class="form-control form-control-lg" readonly placeholder="" style="border-color: #ff9800; background-color: #ffba53; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>    
+
+                    <!-- Hora de salida -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="horaSalidaInput" style="color: #ff9800;" >Hora de Salida:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4"style="color: #ff9800; border-color: #ffffff;"><i class="fas fa-clock"></i></span>
+                            <input type="text" id="horaSalidaInput" class="form-control form-control-lg" readonly placeholder="" style="border-color: #ff9800; background-color: #ffba53; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>    
+
+                    <!-- Botón de envío -->
+                    <button class="btn btn-success w-100 mt-3" type="submit">
+                        <i class="fas fa-check-circle"></i> Registrar
+                    </button>
+                </form>
+                
+                <!-- Popup mensaje -->
+                <div id="mensajePopup"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            function mostrarMensaje(texto, tipo) {
+                let mensajePopup = $("#mensajePopup");
+                let icono = "";
+                
+                // Verificar si el mensaje es "Asistencia registrada" y hacerlo verde
+                if (texto === "Asistencia registrada.") {
+                    icono = '<i class="fas fa-check-circle"></i> '; // Ícono de éxito (tilde verde)
+                    mensajePopup.css({
+                        "background-color": "rgba(40, 167, 69, 0.9)", // Verde
+                        "border": "1px solid rgba(40, 167, 69, 1)" // Borde verde
+                    });
+                } else {
+                    icono = '<i class="fas fa-exclamation-triangle"></i> '; // Ícono de advertencia (warning rojo)
+                    mensajePopup.css({
+                        "background-color": "rgba(220, 53, 69, 0.9)", // Rojo
+                        "border": "1px solid rgba(220, 53, 69, 1)" // Borde rojo
+                    });
+                }
+
+                // Mostrar el mensaje con el icono
+                mensajePopup.html(icono + texto).fadeIn();
+
+                // Ocultar después de 5 segundos
+                setTimeout(function () {
+                    mensajePopup.fadeOut();
+                }, 5000);
+            }
+
+            $("#profesorForm").on("submit", function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'registro_profesor' %}",
+                    data: {
+                        dni: $("#dni").val(),
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        if (response.status === "success") {
+                            mostrarMensaje("Asistencia registrada.", "success");
+
+                             // ✅ Asignar el nombre del profesor al input
+                             $("#nombreInput").val(response.nombre_profesor || "");
+
+                            // Actualizar los campos con la información recibida
+                            $("#horaIngresoInput").val(response.hora_ingreso || "");
+                            $("#horaSalidaInput").val(response.hora_salida || "");
+
+                            // Limpiar los datos después de 10 segundos
+                            setTimeout(function () {
+                                $("#dni").val("").focus();
+                                $("#nombreInput").val("");
+                                $("#horaIngresoInput").val("");
+                                $("#horaSalidaInput").val("");
+                                $("#dni").trigger("focus"); // Mantener el foco en DNI
+                            }, 10000); 
+                        } else {
+                            mostrarMensaje(response.mensaje, "error");
+                            // ✅ Limpiar solo el campo DNI si el profe no existe
+                            setTimeout(function () {
+                                console.log("Limpiando DNI...");
+                                $("#dni").val("").focus();
+                            }, 10000);
+                        }
+                    },
+                    error: function () {
+                        mostrarMensaje("Error en el servidor. Inténtalo más tarde.", "error");
+                    }
+                });
+            });
+
+            function mantenerFocus() {
+                setTimeout(function () {
+                    $("#dni").trigger("focus");
+                }, 10);
+            }
+
+            mantenerFocus();
+            $("#dni").on("blur", function () {
+                mantenerFocus();
+            });
+        });
+    </script>
+</body>              
+</html>
+{% endblock %}

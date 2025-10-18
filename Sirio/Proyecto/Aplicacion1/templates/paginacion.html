@@ -1,0 +1,60 @@
+<style>
+    .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            }
+
+            .pagination a,
+            .pagination span {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            }
+
+            .pagination a:hover {
+            background: #198754; /* verde suave */
+            transform: translateY(-2px);
+            box-shadow: 0 0 8px rgba(25, 135, 84, 0.5);
+            }
+
+            .pagination a[aria-label="Página anterior"]:hover {
+            background: #dc3545; /* rojo suave */
+            box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+            }
+
+            .pagination span {
+            background: rgba(255, 255, 255, 0.08);
+            cursor: default;
+            border: none;
+            }
+
+</style>
+
+<div class="pagination justify-content-center mt-3">
+    {% if page_obj.has_previous %}
+        <a class="btn btn-sm btn-outline-light text-dark rounded-pill me-2" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">
+            &laquo; Anterior
+        </a>
+    {% endif %}
+
+
+    <span class="btn btn-sm btn-outline-light text-dark rounded-pill disabled">
+        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+    </span>
+
+
+    {% if page_obj.has_next %}
+        <a class="btn btn-sm btn-outline-light text-dark rounded-pill ms-2" href="?page={{ page_obj.next_page_number }}" aria-label="Página siguiente">
+            Siguiente &raquo;
+        </a>
+    {% endif %}
+</div>

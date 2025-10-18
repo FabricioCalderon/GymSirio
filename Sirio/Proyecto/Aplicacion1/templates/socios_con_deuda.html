@@ -1,0 +1,249 @@
+{% include 'admin_nav.html' %}
+{% include 'base.html' %} 
+{% block content %} 
+{% load humanize %}
+{% load static %}
+<!DOCTYPE html>
+<header>
+    {% block css %}
+    <link rel="stylesheet" href="{% static '/estilos.css' %}">
+    {% endblock %}
+</header>
+<div class="container mt-3">
+    <form method="GET" action="{% url 'socios_con_deuda' %}"> 
+        <div class="input-group">
+            <input type="text" class="form-control rounded-start" name="q" value="{{ query }}" placeholder="Buscar Socio...">
+            <button class="btn btn-primary rounded-end px-4" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+<body>
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .btn.custom-btn2 {
+            background-color: rgb(216, 33, 33);
+            width: 60%; 
+            height: 60%;
+        }
+
+        .btn.custom-btn2:hover {
+            background-color:  #f80000;
+        }
+
+        .centered-cell {
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            }
+
+            .pagination a,
+            .pagination span {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            }
+
+            .pagination a:hover {
+            background: #198754; /* verde suave */
+            transform: translateY(-2px);
+            box-shadow: 0 0 8px rgba(25, 135, 84, 0.5);
+            }
+
+            .pagination a[aria-label="Página anterior"]:hover {
+            background: #dc3545; /* rojo suave */
+            box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+            }
+
+            .pagination span {
+            background: rgba(255, 255, 255, 0.08);
+            cursor: default;
+            border: none;
+            }
+
+
+        .alert-container {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1055;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        .custom-alert {
+        background-color: rgba(0, 0, 0, 0.85);
+        border-radius: 20px;
+        padding: 25px 35px;
+        text-align: center;
+        color: #fff;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        max-width: 420px;
+        width: 90%;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 0.4s ease;
+        position: relative;
+        }
+
+        .custom-alert .icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        }
+
+        .custom-alert p {
+        font-size: 1.1rem;
+        margin: 0;
+        font-weight: 500;
+        }
+
+        .alert-success {
+        border-left: 6px solid #4CAF50;
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.85), rgba(76, 175, 80, 0.8));
+        }
+        .alert-error {
+        border-left: 6px solid #e53935;
+        background: linear-gradient(135deg, rgba(211, 47, 47, 0.85), rgba(239, 83, 80, 0.8));
+        }
+        .alert-info {
+        border-left: 6px solid #1e88e5;
+        background: linear-gradient(135deg, rgba(21, 101, 192, 0.85), rgba(33, 150, 243, 0.8));
+        }
+
+        @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .custom-alert {
+        transition: opacity 0.6s ease;
+        }
+
+    </style>
+
+        {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                <div 
+                    class="custom-alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
+                    <div class="icon">
+                    {% if message.tags == 'error' %}
+                        ⚠️
+                    {% elif message.tags == 'success' %}
+                        ✅
+                    {% else %}
+                        ℹ️
+                    {% endif %}
+                    </div>
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+    <div class="container">  
+
+        <div class="row position-absolute top-0 end-0 mt-2 me-2 justify-content-end">
+            <div class="col-auto">
+                <a class="btn btn-primary" href="{% url 'RegistroPagoLista' %}">
+                    <i class="fas fa-file-alt"></i>
+                </a>
+            </div>
+        </div>
+        <h1>Saldos</h1>
+
+        <div class="table-responsive"> 
+            <table class="table table-striped table-hover rounded">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Deuda Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for socio in socios_con_deuda %}
+                    <tr>
+                        <td>{{ socio.Nombre }}</td>
+                        <td>{{ socio.Dni }}</td>
+                        <td>${{ socio.deuda_total|default_if_none:"0"|floatformat:2|intcomma }}</td>
+                        <td>
+                            {% if socio.deuda_total > 0 %}
+                                <a href="{% url 'registrar_pago' socio.subscripcion_set.first.id %}" class="btn btn-success">Pagar</a>
+                            {% else %}
+                                <span class="text-success">Deuda saldada</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay socios con deuda pendiente.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mostrar el total de la deuda -->
+        <div class="total-deuda mt-3">
+            <strong>Total de Deuda:</strong> ${{ total_deuda|floatformat:2|intcomma }}
+        </div>
+
+        <div class="pagination justify-content-center mt-3">
+            {% if page_obj.has_previous %}
+                <a class="btn btn-sm btn-outline-light text-dark rounded-pill me-2" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">
+                    &laquo; Anterior
+                </a>
+            {% endif %}
+        
+            <span class="btn btn-sm btn-outline-light text-dark rounded-pill disabled">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
+        
+            {% if page_obj.has_next %}
+                <a class="btn btn-sm btn-outline-light text-dark rounded-pill ms-2" href="?page={{ page_obj.next_page_number }}" aria-label="Página siguiente">
+                    Siguiente &raquo;
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.custom-alert').forEach(alert => {
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 600);
+            });
+        }, 3000);
+    </script>
+            
+</body>
+{% endblock %}

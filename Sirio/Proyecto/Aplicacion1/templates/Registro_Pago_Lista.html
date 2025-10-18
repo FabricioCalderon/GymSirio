@@ -1,0 +1,151 @@
+{% include 'admin_nav.html' %}
+{% include 'base.html' %} 
+{% block content %} 
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+
+<div class="container mt-3">
+    <form method="GET" action="{% url 'RegistroPagoLista' %}"> 
+        <div class="input-group">
+            <input type="text" class="form-control rounded-start" name="q" value="{{ query }}" placeholder="Buscar Pago...">
+            <button class="btn btn-primary rounded-end px-4" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+    
+
+<head>  
+    <!-- Incluye los estilos de Bootstrap -->
+    
+</head>
+<body>
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .btn.custom-btn2 {
+            background-color: rgb(216, 33, 33);
+            width: 60%;
+            height: 60%;
+        }
+       
+
+        /* Estilo cuando el cursor está sobre el botón Borrar */
+        .btn.custom-btn2:hover {
+            background-color:  #f80000;
+            
+        }
+        .centered-cell {
+            
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
+            height: 100%; /* Asegura que la celda use todo el alto disponible */
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            }
+
+            .pagination a,
+            .pagination span {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            }
+
+            .pagination a:hover {
+            background: #198754; /* verde suave */
+            transform: translateY(-2px);
+            box-shadow: 0 0 8px rgba(25, 135, 84, 0.5);
+            }
+
+            .pagination a[aria-label="Página anterior"]:hover {
+            background: #dc3545; /* rojo suave */
+            box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+            }
+
+            .pagination span {
+            background: rgba(255, 255, 255, 0.08);
+            cursor: default;
+            border: none;
+            }
+
+
+    </style>
+
+
+<div class="container mt-3"> 
+    <h1>Pagos</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover rounded"> 
+            <thead> 
+                <tr> 
+                    <th>Nombre</th> 
+                    <th>Monto Pagado</th>
+                    <th>Fecha del Pago</th> 
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for pago in pagos %}
+                <tr>
+                    <td>{{ pago.socio.Nombre }}</td>
+                    <td>${{ pago.monto|floatformat:2|intcomma }}</td>
+                    <td>{{ pago.fecha_pago }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+   
+
+    
+    <div class="pagination justify-content-center mt-3">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-sm btn-outline-light text-dark rounded-pill me-2" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">
+                &laquo; Anterior
+            </a>
+        {% endif %}
+    
+        <span class="btn btn-sm btn-outline-light text-dark rounded-pill disabled">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+    
+        {% if page_obj.has_next %}
+            <a class="btn btn-sm btn-outline-light text-dark rounded-pill ms-2" href="?page={{ page_obj.next_page_number }}" aria-label="Página siguiente">
+                Siguiente &raquo;
+            </a>
+        {% endif %}
+    </div>
+
+
+    <!-- Incluye los scripts de Bootstrap al final del cuerpo -->
+   
+</body>
+</html>
+{% endblock %}

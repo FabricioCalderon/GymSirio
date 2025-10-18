@@ -1,0 +1,311 @@
+
+{% include 'base.html' %} 
+{% block content %} 
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia</title>
+    <link rel="stylesheet" id="css-main" href="{% static 'css1/codebase.min.css' %}">
+    <link rel="stylesheet" href="{% static 'estilos.css' %}?v=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+</head>
+
+<style>
+    body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            margin: 0;
+        }
+
+    .btn.custom-btn2 {
+        background-color: rgb(216, 33, 33);
+        width: 60%;
+        height: 60%;
+    }
+   
+
+    /* Estilo cuando el cursor está sobre el botón Borrar */
+    .btn.custom-btn2:hover {
+        background-color:  #f80000;
+        
+    }
+    .centered-cell {
+        
+        
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center; /* Centra verticalmente */
+        height: 100%; /* Asegura que la celda use todo el alto disponible */
+    }
+
+    .mensaje-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 20px 40px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        display: none;
+        z-index: 99999; /* Asegura que esté siempre por encima */
+        text-align: center;
+        max-width: 80%;
+    }
+
+    #dni::placeholder {
+        color: black; /* Cambia el color del texto del placeholder */
+        opacity: 1; /* Asegura que el color sea completamente visible */
+    }
+</style>
+<body>
+    <div id="mensajePopup" class="mensaje-popup"></div>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100" style="margin-top: -25px;">
+        <div class="card shadow-lg w-100" style="max-width: 600px; border-radius: 20px; animation: fadeIn 1s ease-in; min-height: 90vh;">
+            <div class="card-header text-white text-center fw-bold py-3" 
+                style="background: linear-gradient(45deg, #007bff, #0056b3); border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                
+                 <!-- Logo de usuario en la esquina superior izquierda con estilo personalizado y tamaño más grande -->
+                <!-- <div class="position-absolute top-0 start-0 ms-3 mt-3">
+                    <i class="fas fa-user-circle" style="font-size: 3rem; color: black;"></i>
+                </div> -->
+                
+                <h2 class="mb-0 d-flex align-items-center justify-content-center fs-3">
+                    <i class="fas fa-clipboard-list me-2"></i> Registro de Asistencia
+                </h2>
+            </div>
+            <div class="card-body">
+                <form id="asistenciaForm">
+                    
+                    <!-- DNI -->
+                    <div class="form-group mb-3">
+                        <label for="dni" class="fs-5 fw-bold" style="color: #007bff;">DNI:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #007bff; border-color: #ffffff;">
+                                <i class="fas fa-id-card"></i>
+                            </span>
+                            <input type="text" id="dni" name="dni" class="form-control form-control-lg" required 
+                                placeholder="Ingrese su DNI" 
+                                autocomplete="off"
+                                style="border-color: #007bff; background-color: #6da1f0; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+    
+                    <!-- Mensaje -->
+                    <!-- <div class="form-group mb-3">
+                        <label for="mensajeInput" class="fs-5 fw-bold">Mensaje:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4"><i class="fas fa-info-circle"></i></span>
+                            <input type="text" id="mensajeInput" class="form-control form-control-lg" readonly placeholder="Mensaje del sistema"
+                                style="background-color: #f8f9fa; color: #555; border-radius: 15px; border: 2px solid #ddd; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        </div>
+                    </div> -->
+    
+                    <!-- Nombre del Socio --> 
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="nombreInput" style="color: #28a745;">Socio:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #28a745; border-color: #ffffff;">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" id="nombreInput" class="form-control form-control-lg" readonly 
+                                placeholder="" 
+                                style="border-color: #28a745; background-color: #5cec7e; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+    
+                    <!-- Plan -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="planInput" style="color: #ff9800;">Plan:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #ff9800; border-color:#ffffff;">
+                                <i class="fas fa-dumbbell"></i>
+                            </span>
+                            <input type="text" id="planInput" class="form-control form-control-lg" readonly 
+                                placeholder="" 
+                                style="border-color: #ff9800; background-color: #ffba53; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+    
+                    <!-- Clases Restantes -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="diasRestantesInput" style="color: #ff9800;">Clases restantes:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #ff9800; border-color: #ffffff;">
+                                <i class="fas fa-calendar-check"></i>
+                            </span>
+                            <input type="text" id="diasRestantesInput" class="form-control form-control-lg" readonly 
+                                placeholder="" 
+                                style="border-color: #ff9800; background-color: #ffba53; color: #070707; 
+                                    border-radius: 15px; box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3); 
+                                    transition: all 0.3s ease;">
+                        </div>
+                    </div>
+
+    
+                    <!-- Próximo Vencimiento -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="vencimientoInput" style="color: #e53935;">Próximo Vencimiento:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #e53935; border-color: #fafafa;">
+                                <i class="fas fa-calendar-alt"></i>
+                            </span>
+                            <input type="text" id="vencimientoInput" class="form-control form-control-lg" readonly 
+                                placeholder="" 
+                                style="border-color: #e53935; background-color: #f35d5a; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(229, 57, 53, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+
+                    <!-- Saldo -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="saldoInput" style="color: #e53935;">Saldo:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4" style="color: #e53935; border-color: #fafafa;">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </span>
+                            <input type="text" id="saldoInput" class="form-control form-control-lg" readonly 
+                                placeholder="" 
+                                style="border-color: #e53935; background-color: #f35d5a; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(229, 57, 53, 0.2); transition: all 0.3s ease;">
+                        </div>
+                    </div>
+    
+                    <!-- Botón de Envío -->
+                    <button class="btn btn-success w-100 mt-3" type="submit" 
+                            style="border-radius: 50px; background-color: #28a745; box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3); 
+                                   transition: all 0.3s ease; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle"></i> Registrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animación de entrada -->
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    
+    
+    <!-- FontAwesome para íconos-->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    
+    <script>
+           $(document).ready(function () {
+            function mostrarMensaje(texto, tipo) {
+                let mensajePopup = $("#mensajePopup");
+                let icono = "";
+                
+                // Verificar si el mensaje es "Asistencia registrada" y hacerlo verde
+                if (texto === "Asistencia registrada.") {
+                    icono = '<i class="fas fa-check-circle"></i> '; // Ícono de éxito (tilde verde)
+                    mensajePopup.css("background-color", "rgba(40, 167, 69, 0.9)"); // Verde
+                } else {
+                    icono = '<i class="fas fa-exclamation-triangle"></i> '; // Ícono de advertencia (warning rojo)
+                    mensajePopup.css("background-color", "rgba(220, 53, 69, 0.9)"); // Rojo
+                }
+
+                // Mostrar el mensaje con el icono
+                mensajePopup.html(icono + texto).fadeIn();
+
+                // Ocultar después de 5 segundos
+                setTimeout(function () {
+                    mensajePopup.fadeOut();
+                }, 5000);
+            }
+
+            $("#asistenciaForm").on("submit", function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'registrar_asistencia' %}",
+                    data: {
+                        dni: $("#dni").val(),
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        if (response.status === "success") {
+                            // Verifica si es el mensaje de "Asistencia registrada"
+                            let mensaje = response.mensaje === "Asistencia registrada." ? "success" : "error";
+                            mostrarMensaje(response.mensaje, mensaje);
+
+                            let mensajeFinal = response.mensaje;
+                            if (response.saldo > 0) {
+                                // Usamos toLocaleString para formatear el saldo con puntos y comas
+                                let saldoFormateado = parseFloat(response.saldo).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+                                mensajeFinal += "<br><strong>Saldo: " + saldoFormateado + "</strong>";
+                            }
+
+                            mostrarMensaje(mensajeFinal, "success");
+
+                            // Actualizar los campos con la información recibida
+                            $("#nombreInput").val(response.nombre);
+                            $("#diasRestantesInput").val(response.dias_restantes);
+                            $("#planInput").val(response.plan); 
+                            $("#vencimientoInput").val(response.vencimiento);
+                            let saldoTexto = response.saldo !== null ? "$" + parseFloat(response.saldo).toFixed(2) : "$0.00";
+                            $("#saldoInput").val(saldoTexto);
+                        } else {
+                            mostrarMensaje(response.mensaje, "error");
+                        }
+
+                        // Limpiar el formulario después de 10 segundos
+                        setTimeout(function () {
+                            $("#dni").val("");
+                            $("#nombreInput").val("");      
+                            $("#diasRestantesInput").val("");
+                            $("#planInput").val("");
+                            $("#vencimientoInput").val("");
+                            $("#saldoInput").val("");
+                            $("#dni").trigger("focus"); // Mantener el foco en DNI
+                        }, 10000);
+                    },
+                    error: function () {
+                        mostrarMensaje("Error en el servidor. Inténtalo más tarde.", "error");
+                    }
+                });
+            });
+
+            function mantenerFocus() {
+                setTimeout(function () {
+                    $("#dni").trigger("focus");
+                }, 10);
+            }
+
+            mantenerFocus();
+            $("#dni").on("blur", function () {
+                mantenerFocus();
+            });
+        });
+
+    </script>
+     
+</body>              
+</html>
+{% endblock %}

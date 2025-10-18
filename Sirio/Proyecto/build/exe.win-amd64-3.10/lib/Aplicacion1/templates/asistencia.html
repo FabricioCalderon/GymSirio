@@ -1,0 +1,190 @@
+
+{% include 'base.html' %} 
+{% block content %} 
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia</title>
+    <link rel="stylesheet" id="css-main" href="{% static 'css1/codebase.min.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    body {
+        min-height: 100vh;
+            background:linear-gradient(rgba(24, 2, 27, 0.8), rgba(0 6 193 / 30%));
+            display: flex;
+            flex-direction: column;
+    
+    }
+
+    .btn.custom-btn2 {
+        background-color: rgb(216, 33, 33);
+        width: 60%;
+        height: 60%;
+    }
+   
+
+    /* Estilo cuando el cursor está sobre el botón Borrar */
+    .btn.custom-btn2:hover {
+        background-color:  #f80000;
+        
+    }
+    .centered-cell {
+        
+        
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center; /* Centra verticalmente */
+        height: 100%; /* Asegura que la celda use todo el alto disponible */
+}
+
+
+</style>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-80">
+        <div class="card shadow-lg w-100" style=" max-width: 550px;">
+            <div class="card-header text-white text-center fw-bold py-3" 
+                style="background: linear-gradient(45deg, #007bff, #0056b3); border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h2 class="mb-0 d-flex align-items-center justify-content-center">
+                    <i class="fas fa-clipboard-list me-2"></i> Registro de Asistencia
+                </h2>
+            </div>
+            <div class="card-body">
+                <form id="asistenciaForm">
+                    
+                    <!-- DNI -->
+                    <div class="form-group mb-3">
+                        <label for="dni" class="fs-5 fw-bold">DNI:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4 "><i class="fas fa-id-card"></i></span>
+                            <input type="text" id="dni" name="dni" class="form-control form-control-lg" required placeholder="Ingrese su DNI">
+                        </div>
+                    </div>
+    
+                    <!-- Mensaje -->
+                    <div class="form-group mb-3">
+                        <label for="mensajeInput" class="fs-5 fw-bold">Mensaje:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4"><i class="fas fa-info-circle"></i></span>
+                            <input type="text" id="mensajeInput" class="form-control form-control-lg" readonly placeholder="Mensaje del sistema">
+                        </div>
+                    </div>
+    
+                    <!-- Nombre del Socio -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="nombreInput">Socio:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4"><i class="fas fa-user"></i></span>
+                            <input type="text" id="nombreInput" class="form-control form-control-lg" readonly placeholder="Nombre del socio">
+                        </div>
+                    </div>
+                    
+                    <!-- Plan -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="planInput">Plan:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4"><i class="fas fa-dumbbell"></i></span>
+                            <input type="text" id="planInput" class="form-control form-control-lg" readonly placeholder="Nombre del plan">
+                        </div>
+                    </div>
+                    
+                    <!-- Clases restantes -->
+                    <div class="form-group mb-3">
+                        <label  class="fs-5 fw-bold" for="diasRestantesInput">Clases restantes:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4"><i class="fas fa-calendar-check"></i></span>
+                            <input type="text" id="diasRestantesInput" class="form-control form-control-lg" readonly placeholder="Número de clases restantes">
+                        </div>
+                    </div>
+    
+    
+                    <!-- Próximo Vencimiento -->
+                    <div class="form-group mb-3">
+                        <label class="fs-5 fw-bold" for="vencimientoInput">Próximo Vencimiento:</label>
+                        <div class="input-group">
+                            <span class="input-group-text fs-4 "><i class="fas fa-calendar-alt"></i></span>
+                            <input type="text" id="vencimientoInput" class="form-control form-control-lg" readonly placeholder="Fecha de vencimiento">
+                        </div>
+                    </div>
+    
+                    <!-- Botón de envío -->
+                    <button class="btn btn-success w-100 mt-3" type="submit">
+                        <i class="fas fa-check-circle"></i> Registrar
+                    </button>
+    
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FontAwesome para íconos -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <script>
+        $(document).ready(function () {
+            $("#asistenciaForm").on("submit", function (e) {
+                e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    
+               // Realizar la solicitud AJAX
+               $.ajax({
+                    type: "POST",
+                    url: "{% url 'registrar_asistencia' %}", // URL para procesar la solicitud
+                    data: {
+                        dni: $("#dni").val(),
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        if (response.status === "success") {
+                            // Actualizar los campos con los datos recibidos
+                            $("#mensajeInput").val(response.mensaje);
+                            $("#nombreInput").val(response.nombre);
+                            $("#diasRestantesInput").val(response.dias_restantes);
+                            $("#planInput").val(response.plan);
+                            $("#vencimientoInput").val(response.vencimiento);
+
+                             // Limpiar los datos después de 30 segundos
+                            setTimeout(function () {
+                                $("#dni").val("").focus;
+                                $("#mensajeInput").val("");
+                                $("#nombreInput").val(""); // Vaciar el campo DNI
+                                $("#diasRestantesInput").val(""); // Vaciar el campo DNI
+                                $("#planInput").val(""); // Vaciar el campo DNI
+                                $("#vencimientoInput").val(""); // Vaciar el campo DNI
+                            }, 10000); // 30 segundos
+                            
+                        } else {
+                            // En caso de error, mostrar el mensaje y limpiar otros campos
+                            $("#mensajeInput").val(response.mensaje);
+                            $("#nombreInput").val("");
+                            $("#diasRestantesInput").val("");
+                            $("#planInput").val("");
+                            $("#vencimientoInput").val("");
+                        }
+                    },
+                    error: function () {
+                        // Manejar errores del servidor
+                        $("#mensajeInput").val("Error en el servidor. Inténtalo más tarde.");
+                        $("#nombreInput").val("");
+                        $("#diasRestantesInput").val("");
+                        $("#planInput").val("");
+                        $("#vencimientoInput").val("");
+                    }
+                });
+            });
+            // Colocar el focus automáticamente al cargar la página
+            $("#dni").focus();
+        });
+    </script>
+    
+             
+     
+</body>              
+</html>
+{% endblock %}

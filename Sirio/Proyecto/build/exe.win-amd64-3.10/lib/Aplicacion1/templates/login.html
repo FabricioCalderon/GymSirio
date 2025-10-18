@@ -1,0 +1,146 @@
+{% load static %}
+{% block content %}
+{% if error == "no" %}
+     <script>
+	   alert('Logged In Successfully');
+       window.location.href = "{% url 'home_view' %}"; 
+     </script>
+{% endif %}
+
+
+{% if error == "yes" %}
+     <script>
+	    alert('Invalid Credentials, Please Try Again');
+     </script>
+{% endif %}
+
+<style>
+   /* Asegúrate de que el contenedor principal esté centrado y tiene un max-width */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Estilo para el contenedor del formulario */
+.wrapper {
+    max-width: 500px;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Títulos de la sección Login */
+.title-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Estilo para los campos de entrada del formulario */
+.field {
+    margin-bottom: 20px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4E004E;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #6A1B9A;
+}
+
+/* Enlaces */
+a {
+    color: #4E004E;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive: ajustar en pantallas pequeñas */
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .title-text {
+        margin-bottom: 15px;
+    }
+}
+</style>
+
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Login Form</title>
+      <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+   <body>
+      <div class="wrapper">
+         <div class="title-text"> 
+            <div class="title login">
+                Login
+            </div>
+            <div class="title signup">
+               Signup Form
+            </div>
+         </div>
+         <div class="form-container">
+            <div class="form-inner">
+               <form method="post" class="login">
+                  {% csrf_token %}
+                  <div class="field">
+                     <input type="text" name="uname" placeholder="Username" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" name="pwd" placeholder="Password" required>
+                  </div>
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input type="submit" value="Login">
+                  </div>
+                  <div class="field">
+                     <center><a href="{% url 'index' %}">Back to Home</a></center>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% include 'admin_nav.html' %}
+{% include 'base.html' %} 
+{% block content %} 
+{% load static %}
+{% load humanize %}
+
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+        display: flex;
+        flex-direction: column;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    /* Tarjeta principal */
+    .card {
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 15px;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+        color: #fff;
+        backdrop-filter: blur(6px);
+        width: 100%;
+        max-width: 500px;
+        padding: 25px;
+    }
+
+    .card-body h1, .card-body h3 {
+        color: #ffffff;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* Inputs */
+    input, select {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff !important;
+        border-radius: 8px;
+        padding: 10px;
+        width: 100%;
+        font-size: 1rem;
+        transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+        border-color: #bb86fc;
+        background-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 8px rgba(187, 134, 252, 0.6);
+        outline: none;
+    }
+
+    /* Botones */
+    .btn-agregar {
+        display: block;
+        margin: 20px auto 0 auto;
+        width: 50%;
+        padding: 10px 0;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #fff;
+        background: linear-gradient(135deg, #00c853, #66bb6a);
+        border: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 255, 100, 0.3);
+    }
+
+    .btn-agregar:hover {
+        background: linear-gradient(135deg, #00e676, #81c784);
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(0, 255, 100, 0.5);
+    }
+
+    /* Fondo del formulario */
+    /* .bg-gd-sea {
+        background-color: rgba(0, 0, 0, 0.75);
+        color: #fff;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    } */
+
+    .alert {
+        margin-top: 15px;
+        border-radius: 8px;
+    } 
+
+
+    /* Selector de fecha */
+    .card-bg input[type="date"] {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 10px 12px;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Cambiar borde y sombra al hacer focus */
+    .card-bg input[type="date"]:focus {
+        border-color: #bb86fc;
+        background-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 8px rgba(187, 134, 252, 0.6);
+        outline: none;
+    }
+
+    /* Icono del calendario en navegadores webkit (Chrome, Edge, Safari) */
+    .card-bg input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* icono blanco */
+        cursor: pointer;
+    }
+
+    /* Opcional: animación de aparición de la tarjeta */
+    .card {
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    
+
+</style>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg p-4 card-bg">
+        <div class="card-body bg-gd-sea text-white ">
+            <h1>Ingresos</h1>
+            <form method="POST" action="{% url 'ingresos' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="fecha_inicio" class="form-label">Fecha de inicio</label>
+                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_fin" class="form-label">Fecha de fin</label>
+                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                </div>
+                <div class="mt-4">
+                    <h3>Totales</h3>
+                    <div class="mb-2">
+                        <strong>Ingreso por Subscripciones:</strong> ${{ total_ingresado_subs|default_if_none:"0"|floatformat:2|intcomma }}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Ingreso por Pagos de Saldo:</strong> ${{ total_ingresado_saldos|default_if_none:"0"|floatformat:2|intcomma }}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Total:</strong> ${{ total_ingresado|default_if_none:"0"|floatformat:2|intcomma }}
+                    </div>
+                </div>
+                <button type="submit" class="btn-agregar">Filtrar</button>
+            </form>
+
+            {% if error_message %}
+                <div class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
+        </div>        
+    </div>
+</div>
+
+{% endblock %}

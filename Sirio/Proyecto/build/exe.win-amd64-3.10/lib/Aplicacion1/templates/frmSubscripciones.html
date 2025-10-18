@@ -1,0 +1,143 @@
+{% include 'base.html' %} 
+{% load static %}
+{% block content %} 
+<style>
+    body {
+        min-height: 100vh;
+        background:linear-gradient(rgba(24, 2, 27, 0.8), rgba(0 6 193 / 30%));
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    .btn.custom-btn2 {
+        background-color: rgb(216, 33, 33);
+        width: 60%;
+        height: 60%;
+    }
+   
+
+    /* Estilo cuando el cursor está sobre el botón Borrar */
+    .btn.custom-btn2:hover {
+        background-color:  #f80000;
+        
+    }
+    .centered-cell {
+        
+        
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center; /* Centra verticalmente */
+        height: 100%; /* Asegura que la celda use todo el alto disponible */
+    }
+    .bg-gd-sea {
+    background-color: rgba(0, 0, 0, 0.7); /* Negro translúcido */
+    color: #fff; /* Texto blanco */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+    }
+   
+
+</style>
+<div class="container">
+    <div class="row">
+        <!-- Columna para el Formulario de Suscripción -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg w-100">
+                <div class="card-body bg-gd-sea text-white">
+                    <form method="post" id="SubscripcionForm">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="btn btn-success btn-lg rounded-pill px-5" type="submit">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna para el Historial de Suscripciones -->
+        <div class="col-md-6">
+            <h3>Historial de Suscripciones</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered rounded">
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in historial %}
+                        <tr>
+                            <td>{{ sub.plan.Nombre }}</td>
+                            <td>{{ sub.fecha_inicio }}</td>
+                            <td>{{ sub.fecha_fin|default:"En curso" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No hay suscripciones previas.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+<script>
+    document.getElementById('id_plan').addEventListener('change', function() {
+        const planId = this.value;
+        if (planId) {
+            fetch(`/obtener_detalles_plan/${planId}/`) 
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('id_monto').value = data.monto;
+                        document.getElementById('id_dias').value = data.dias;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            document.getElementById('id_monto').value = '';
+            document.getElementById('id_dias').value = '';
+        }
+    });
+
+
+
+    // Función para sumar un mes a una fecha
+    function sumarUnMes(fecha) {
+        const fechaInicio = new Date(fecha);
+        const nuevoMes = fechaInicio.getMonth() + 1; // Sumar un mes
+        fechaInicio.setMonth(nuevoMes);
+
+        // Ajuste si el día no existe en el nuevo mes (p.ej., del 31 al 30)
+        if (fechaInicio.getMonth() !== (nuevoMes % 12)) {
+            fechaInicio.setDate(0); // Establecer al último día del mes anterior
+        }
+
+        return fechaInicio.toISOString().split('T')[0]; // Convertir a formato YYYY-MM-DD
+    }
+
+    // Función para actualizar automáticamente la fecha de fin
+    function actualizarFechaFin() {
+        const fechaInicio = document.getElementById('id_fecha_inicio').value;
+        if (fechaInicio) {
+            const fechaFin = sumarUnMes(fechaInicio); // Calcular la fecha de fin
+            document.getElementById('id_fecha_fin').value = fechaFin; // Asignar al campo de fecha de fin
+        } else {
+            document.getElementById('id_fecha_fin').value = ''; // Vaciar si no hay fecha de inicio
+        }
+    }
+
+    // Ejecutar al cambiar el valor de la fecha de inicio
+    document.getElementById('id_fecha_inicio').addEventListener('change', actualizarFechaFin);
+
+    // Ejecutar al cargar la página si la fecha de inicio ya tiene un valor
+    window.addEventListener('load', actualizarFechaFin);
+</script>
+{% endblock %}

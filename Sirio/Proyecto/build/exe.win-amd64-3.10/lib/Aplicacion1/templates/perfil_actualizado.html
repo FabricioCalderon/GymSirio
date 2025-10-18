@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background:linear-gradient(rgba(24, 2, 27, 0.8), rgba(0 6 193 / 30%));
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg p-4 text-center" style="max-width: 400px;">
+        <div class="card-body">
+            <h2 class="text-success fw-bold">¡Perfil Actualizado!</h2>
+            <p class="text-muted">Tu usuario y contraseña han sido actualizados con éxito.</p>
+            <a href="{% url 'home_view' %}" class="btn btn-primary rounded-pill px-4 mt-3">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

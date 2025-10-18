@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+    }
+
+    .card-success {
+        background-color: rgba(0, 0, 0, 0.75);
+        padding: 30px 25px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        max-width: 400px;
+        width: 100%;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .card-success h2 {
+        color: #4CAF50;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .card-success p {
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+
+    .btn-gradient {
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #fff !important;
+    }
+
+    .btn-primary-gradient {
+        background: linear-gradient(135deg, #4CAF50, #81C784);
+        border: none;
+    }
+
+    .btn-primary-gradient:hover {
+        background: linear-gradient(135deg, #45a049, #66bb6a);
+        transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card-success text-center">
+        <h2>¡Perfil Actualizado!</h2>
+        <p>Tu usuario y contraseña han sido actualizados con éxito.</p>
+        <a href="{% url 'home_view' %}" class="btn btn-gradient btn-primary-gradient">
+            Volver al inicio
+        </a>
+    </div>
+</div>
+{% endblock %}

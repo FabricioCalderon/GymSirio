@@ -1,0 +1,208 @@
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <!---Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!---Script js-->
+    <script src="{% static 'script.js' %}"></script>
+    <script src="https://kit.fontawesome.com/332a215f17.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Moderno</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Estilo base del navbar */
+        .navbar {
+            background: rgba(3, 3, 3, 0.9); /* Fondo semitransparente */
+            backdrop-filter: blur(10px); /* Difuminado para efecto moderno */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Logo */
+        .navbar-brand {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Estilos de los enlaces */
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Hover en los enlaces */
+        .navbar-nav .nav-link:hover {
+            color: #f8b400;
+            transform: scale(1.1);
+        }
+
+        /* Botón de menú hamburguesa */
+        .navbar-toggler {
+            border: none;
+            background: transparent;
+            outline: none;
+        }
+
+        .navbar-toggler-icon {
+            background-color: white;
+            border-radius: 2px;
+            width: 25px;
+            height: 3px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler-icon::before,
+        .navbar-toggler-icon::after {
+            content: "";
+            background-color: white;
+            width: 25px;
+            height: 3px;
+            display: block;
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler-icon::before {
+            transform: translateY(-8px);
+        }
+
+        .navbar-toggler-icon::after {
+            transform: translateY(8px);
+        }
+
+        /* Animación de apertura del menú */
+        .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+            background-color: transparent;
+        }
+
+        .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Responsive: Ocultar navbar cuando se desplaza hacia abajo */
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Estilo del Hero */
+        .main-title {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: url('https://source.unsplash.com/1600x900/?gym,fitness') no-repeat center center/cover;
+            color: white;
+            padding: 20px;
+        }
+
+        .main-text h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .main-text p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#">Gym El Sirio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-light fw-semibold px-3" href="{% url 'asistencia_page' %}" target="_blank" rel="noopener noreferrer" role="button">Asistencia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary rounded-pill px-4 ms-3" href="/login_view">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <header class="vh-100 d-flex align-items-center justify-content-center text-center position-relative bg-dark text-white">
+        <!-- Fondo con imagen y overlay -->
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('ruta-a-tu-imagen.jpg') center/cover no-repeat;"></div>
+    
+        <div class="container position-relative z-1">
+            <h1 class="display-3 fw-bold text-uppercase">Bienvenido a <span class="text-primary">Gym El Sirio</span></h1>
+            <p class="lead text-light opacity-75">Un sistema de gestión completo para gimnasios y clubes de fitness. Administra membresías, pagos y más con facilidad.</p>
+           <!-- <a href="#contacto" class="btn btn-primary btn-lg rounded-pill px-5 mt-3 shadow">Empezar ahora</a>-->
+        </div>
+    </header>
+    
+
+    <script>
+        // Ocultar navbar al hacer scroll hacia abajo
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            let navbar = document.querySelector(".navbar");
+            if (currentScroll > lastScrollTop) {
+                navbar.classList.add("hidden");
+            } else {
+                navbar.classList.remove("hidden");
+            }
+            lastScrollTop = currentScroll;
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2025 Gym El Sirio. Todos los derechos reservados.</p>
+            <p class="small">
+                <a href="#" class="text-light text-decoration-none">Términos y Condiciones</a> | 
+                <a href="#" class="text-light text-decoration-none">Política de Privacidad</a>
+            </p>
+            <!-- Redes Sociales -->
+            
+        </div>
+    </footer>
+</body>
+</html>
+
+{% endblock %}

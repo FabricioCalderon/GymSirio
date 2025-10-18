@@ -1,0 +1,167 @@
+
+/* Botones de navbar */
+.navbar-nav .btn {
+    font-weight: bold;
+    border-radius: 25px;
+    padding: 8px 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+/* Botón editar perfil */
+.navbar-nav .btn.btn-outline-primary {
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    color: #fff !important;
+    border: none;
+    
+}
+
+.navbar-nav .btn.btn-outline-primary:hover {
+    background: linear-gradient(135deg, #45a049, #66bb6a);
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+
+/* Botón salir */
+.navbar-nav .btn.btn-outline-danger {
+    background: linear-gradient(135deg, #f44336, #e57373);
+    color: #fff !important;
+    border: none;
+}
+
+.navbar-nav .btn.btn-outline-danger:hover {
+    background: linear-gradient(135deg, #e53935, #ef5350);
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+
+/* Íconos dentro del botón */
+.navbar-nav .btn i {
+    font-size: 15px;
+    margin-right: 6px;
+}
+
+.navbar-nav .nav-item:nth-child(2) a {
+    margin-left: 15px; /* separa el botón de "Salir" del de "Editar perfil" */
+}
+
+
+/* HOME / DASHBOARD
+================================== */ 
+body{
+    
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    color: #ffffff;
+    margin: 0;
+   
+}
+.dashboard {
+    padding: 60px 20px;
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap; /* Permite que bajen si no entran todas */
+    justify-content: center; /* Centra las tarjetas */
+    gap: 20px; /* Espacio entre las tarjetas */
+    padding: 30px;
+    
+}
+
+/* Tarjetas */
+.dashboard .card-link {
+    text-decoration: none;
+    color: #fff;
+}
+
+.dashboard .card {
+    width: 220px;
+    height: 150px;
+    background: linear-gradient(145deg, #6e00b3, #3f0674);
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(155, 77, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dashboard .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(155, 77, 255, 0.6);
+}
+
+/* Íconos */
+.dashboard .card i {
+    font-size: 40px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/* Texto */
+.dashboard .card p {
+    font-weight: bold;
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Contador circular */
+.dashboard .ribbon-box {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   FOOTER
+================================== */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(3, 3, 3, 0.9);
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+footer .btn-outline-light {
+    border: 1px solid #9b4dff;
+    color: #9b4dff;
+    transition: all 0.3s ease;
+}
+
+footer .btn-outline-light:hover {
+    background: #9b4dff;
+    color: #fff;
+}
+
+
+
+
+
+
+

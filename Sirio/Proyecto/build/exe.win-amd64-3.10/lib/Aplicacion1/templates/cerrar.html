@@ -1,0 +1,38 @@
+{% include 'base.html' %}  
+{% block content %} 
+{% load static %} 
+
+<style>
+     body {
+            min-height: 100vh;
+            background:linear-gradient(rgba(24, 2, 27, 0.8), rgba(0 6 193 / 30%)); 
+            display: flex;
+            flex-direction: column;
+            
+        }
+       
+        .detalle h1, .detalle p {
+            color: white; /* Color blanco para los textos */
+        }
+
+</style>
+
+<html>
+    <body>
+        
+        <div class="detalle ">
+            <h1 >Cerrar Sesion</h1>
+
+            <p>¿Esta seguro de Cerrar Sesion <b>{{producto.TipoProducto}}</b>?</p>
+            <form method="post">
+                {% csrf_token %}
+                
+                <a class="btn btn-success btn-lg rounded-pill px-5" href="/navbar">Aceptar</a>                 
+                <a class="btn btn-danger btn-lg rounded-pill px-5"  href="/home_view ">Cancelar</a>
+            </form>
+        </div> 
+    </body>
+    
+
+</html>
+{% endblock %} 

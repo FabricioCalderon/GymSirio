@@ -1,0 +1,184 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym El Sirio</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Íconos -->
+    <script src="https://kit.fontawesome.com/332a215f17.js" crossorigin="anonymous"></script>
+    <!-- Fuente -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'estilos.css' %}">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #141414; /* Fondo más neutro y coherente con tu sistema */
+            color: #fff;
+        }
+ 
+        /* ===== Navbar ===== */
+        .navbar {
+            background: linear-gradient(90deg, rgba(25, 25, 25, 0.95), rgba(60, 0, 110, 0.6)); /* Más oscuro, menos azul */
+            backdrop-filter: blur(8px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-brand {
+            color: #9b4dff !important; /* Violeta brillante */
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #9b4dff !important;
+            transform: scale(1.08);
+        }
+
+        .btn-outline-primary {
+            border-color: #9b4dff;
+            color: #9b4dff;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #9b4dff;
+            color: #fff;
+        }
+
+        /* ===== Hero principal ===== */
+        header.hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(20, 20, 20, 0.9), rgba(50, 0, 90, 0.5)), 
+                        url('https://source.unsplash.com/1600x900/?gym,fitness') center/cover no-repeat;
+            color: #fff;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(155, 77, 255, 0.8);
+        }
+
+        header span {
+            color: #9b4dff; /* Violeta para destacar */
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 20px auto;
+            color: #d1d1d1;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background-color: #101010;
+            color: #aaa;
+        }
+
+        footer a {
+            color: #9b4dff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Navbar oculto al hacer scroll */
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Gym El Sirio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'asistencia_page' %}" target="_blank" rel="noopener noreferrer">Asistencia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'registro_page' %}" target="_blank" rel="noopener noreferrer">Asistencia Profes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary rounded-pill px-4 ms-3" href="/login_view">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero principal -->
+    <header class="hero">
+        <div class="container position-relative">
+            <h1>Bienvenido a <span>Gym El Sirio</span></h1>
+            <p>Un sistema de gestión completo para gimnasios y clubes de fitness. Administra membresías, pagos y más con facilidad.</p>
+        </div>
+    </header>
+
+    <!-- Footer -->
+    <footer class="text-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-1">&copy; 2025 Gym El Sirio. Todos los derechos reservados.</p>
+            <p class="small">
+                <a href="#">Términos y Condiciones</a> | 
+                <a href="#">Política de Privacidad</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Ocultar navbar al hacer scroll hacia abajo
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            let navbar = document.querySelector(".navbar");
+            if (currentScroll > lastScrollTop) {
+                navbar.classList.add("hidden");
+            } else {
+                navbar.classList.remove("hidden");
+            }
+            lastScrollTop = currentScroll;
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

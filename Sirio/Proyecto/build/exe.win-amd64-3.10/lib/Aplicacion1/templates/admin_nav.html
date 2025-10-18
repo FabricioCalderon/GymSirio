@@ -1,0 +1,119 @@
+{% load static %}
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<!-- Custom CSS -->
+
+<link rel="stylesheet" href="{% static 'css/mystyle1.css' %}">
+
+
+<title>Gym System</title>
+
+<style>
+  /* Ajustar la altura del navbar */
+  .navbar-title {
+    font-family: 'Pacifico', cursive; /* Cambia la fuente a cursiva */
+    font-size: 2rem; /* Ajusta el tamaño del texto */
+    color: white; /* Cambia el color del texto */
+    margin: 0; /* Elimina márgenes extra */
+  }
+
+  .navbar {
+    height: 50px; /* Ajusta la altura del navbar */
+    display: flex;
+    align-items: center; /* Centra el texto verticalmente */
+  }
+
+  /* Estilos de los enlaces */
+  .navbar-nav .nav-link {
+            color: white;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Hover en los enlaces */
+        .navbar-nav .nav-link:hover {
+            color: #f8b400;
+            transform: scale(1.1);
+        }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-black shadow">
+    <div class="container-fluid">
+        <!-- Logo o Nombre del Sistema -->
+        <a class="navbar-brand fw-bold text-white ms-3" href="{% url 'home_view' %}">
+            <i class="fas fa-dumbbell me-2"></i> GymMenu
+        </a>
+
+        <!-- Botón de menú responsive -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menú de navegación -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+               
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'SociosLista' %}">Socios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'PlanesLista' %}">Planes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'SubscripcionLista' %}">Suscripciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'asistencia_page' %}">Asistencia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'filtro_dinero' %}">Ingresos</a>
+                </li>
+
+                
+                
+            </ul>
+            
+            <ul class="navbar-nav ms-auto ">
+                <!-- botón de editar perfil aquí -->
+                <li class="nav-item ms-2">
+                    <a class="btn btn-outline-primary btn-sm d-flex align-items-center px-3 py-1" href="{% url 'editar_perfil' %}">
+                        <i class="fas fa-user-edit me-1"></i> 
+                    </a>
+                </li>
+
+                <!-- botón de salir aquí -->
+                <li class="nav-item ms-2">
+                    <a class="btn btn-outline-danger btn-sm d-flex align-items-center px-3 py-1" href="/cerrar">
+                        <i class="fas fa-sign-out-alt me-1"></i> 
+                    </a>
+                </li>
+            </ul>
+            
+            
+        </div>
+    </div>
+</nav>
+
+
+
+
+<!-- Data Table --> 
+
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>

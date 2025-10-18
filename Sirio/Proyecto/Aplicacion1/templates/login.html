@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'login.css' %}?v=3">
+
+<div class="login-wrapper">
+    <div class="login-box">
+        <h2 class="login-title">Login</h2>
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            
+            <!-- Usuario -->
+            <div class="field">
+                <i class="fa fa-user"></i>
+                <input type="text" name="uname" placeholder="Username" required>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="field password-field">
+                <i class="fa fa-lock"></i>
+                <input type="password" name="pwd" placeholder="Password" id="password" required>
+                <i class="fa fa-eye toggle-password"></i>
+            </div>
+
+            <input type="submit" value="Login">
+
+            <div class="field">
+                <center><a href="{% url 'index' %}">Back to Home</a></center>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if error == "no" %}
+<script>
+    alert('Logged In Successfully');
+    window.location.href = "{% url 'home_view' %}";
+</script>
+{% elif error == "yes" %}
+<script>
+    alert('Invalid Credentials, Please Try Again');
+</script>
+{% endif %}
+
+<!-- JS para mostrar/ocultar contraseña -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('.toggle-password');
+    const passwordInput = document.getElementById('password');
+
+    toggle.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        toggle.classList.toggle('fa-eye-slash'); // cambia el icono
+    });
+});
+</script>
+
+{% endblock %}

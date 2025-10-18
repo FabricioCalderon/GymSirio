@@ -1,0 +1,170 @@
+{% include 'admin_nav.html' %}
+{% load static %}
+{% block main %}
+<html lang="es" class="no-focus">
+<head>
+    <meta charset="UTF-8">
+    <title>Gym System</title>
+    <link rel="stylesheet" href="{% static 'estilos.css' %}?v=4">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+</head>
+
+<style>
+    /* ===== Footer ===== */
+    .custom-footer {
+        background-color: #101010;
+        color: #aaa;
+        border-top: 1px solid #222;
+        font-size: 0.90rem;
+        letter-spacing: 0.3px;
+        padding: 8px 0;
+    }
+
+    .custom-footer a {
+    color: #9b4dff;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .custom-footer a:hover {
+    color: #b67dff;
+    text-decoration: underline;
+    transform: translateY(-2px);
+    }
+
+    .footer-social a {
+    display: inline-block;
+    font-size: 1.2rem;
+    margin: 0 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    }
+
+    .footer-social a:hover {
+    background-color: rgba(155, 77, 255, 0.15);
+    color: #b67dff;
+    }
+</style>
+<body>
+    <div class="dashboard mt-5 pt-5">
+        <div class="container text-center">
+            <div class="row justify-content-center g-4">
+
+            <!-- Socios -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'SociosLista' %}">
+                <div class="card">
+                    <div class="ribbon-box">{{ m }}</div>
+                    <i class="fas fa-user-friends"></i>
+                    <p>Socios</p>
+                </div>
+                </a>
+            </div>
+
+            <!-- Planes -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'PlanesLista' %}">
+                <div class="card">
+                    <div class="ribbon-box">{{ p }}</div>
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>Planes</p>
+                </div>
+                </a>
+            </div>
+
+            <!-- Profesores -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'ProfesorLista' %}">
+                <div class="card">
+                    <div class="ribbon-box">{{ p }}</div>
+                    <i class="fas fa-user-tie"></i>
+                    <p>Profesores</p>
+                </div>
+                </a>
+            </div>
+
+
+             <!-- Suscripciones -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'SubscripcionLista' %}">
+                <div class="card">
+                    <!-- <div class="ribbon-box">{{ s }}</div> -->
+                    <i class="fas fa-id-card-alt"></i>
+                    <p>Suscripciones</p>
+                </div>
+                </a>
+            </div>
+            
+            <!-- Ingresos -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'proteger_ingresos' %}">
+                <div class="card">
+                    <!-- <div class="ribbon-box">{{ eq }}</div> -->
+                    <i class="fas fa-cash-register"></i>
+                    <p>Ingresos</p>
+                </div>
+                </a>
+            </div>
+
+           
+
+            <!-- Asistencia -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'asistencia_page' %}">
+                <div class="card">
+                    <!-- <div class="ribbon-box">{{ eq }}</div> -->
+                    <i class="fas fa-calendar-check"></i>
+                    <p>Asistencia</p>
+                </div>
+                </a>
+            </div>
+
+            <!-- Registro Profesores -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'registro_page' %}">
+                <div class="card">
+                    <!-- <div class="ribbon-box">{{ eq }}</div> -->
+                    <i class="fas fa-user-plus"></i>
+                    <p>Ingreso/Egresos Profes</p>
+                </div>
+                </a>
+            </div>
+
+            <!-- Saldos -->
+            <div class="col-md-3 col-sm-6">
+                <a class="card-link" href="{% url 'socios_con_deuda' %}">
+                <div class="card">
+                    <!-- <div class="ribbon-box"></div> -->
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <p>Saldos</p>
+                </div>
+                </a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="custom-footer fixed-bottom text-center">
+        <div class="footer-social mb-1">
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.google.com/?hl=es" target="_blank"><i class="fab fa-google"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p class="mb-0 small">© 2025 MiSistema. Todos los derechos reservados.</p>
+    </footer>
+
+
+
+
+
+    <!-- JS -->
+    <script src="{% static 'js1/core/jquery.min.js' %}"></script>
+    <script src="{% static 'js1/core/popper.min.js' %}"></script>
+    <script src="{% static 'js1/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js1/codebase.js' %}"></script>
+</body>
+</html>
+{% endblock %}

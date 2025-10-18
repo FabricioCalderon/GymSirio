@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% include 'admin_nav.html' %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+    }
+
+    /* Tarjeta central */
+    .edit-card {
+        background-color: rgba(0, 0, 0, 0.75);
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        width: 100%;
+        animation: fadeIn 0.5s ease;
+    }
+
+    /* Icono de usuario */
+    .edit-card .icon-user {
+        font-size: 50px;
+        color: #196cd8;
+        display: block;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    /* Título */
+    .edit-card h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    /* Labels e Inputs */
+    .edit-card label {
+        color: #ccc;
+        font-weight: 500;
+    }
+
+    .edit-card input,
+    .edit-card select {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid #444;
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: #fff;
+        width: 100%;
+    }
+
+    .edit-card input::placeholder,
+    .edit-card select::placeholder {
+        color: #aaa;
+    }
+
+    /* Botones */
+    .btn-custom {
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        color: #fff !important;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, #4CAF50, #81C784);
+    }
+    .btn-update:hover {
+        background: linear-gradient(135deg, #45a049, #66bb6a);
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #f44336, #e57373);
+    }
+    .btn-cancel:hover {
+        background: linear-gradient(135deg, #e53935, #ef5350);
+        transform: translateY(-2px);
+    }
+
+    /* Contenedor de botones */
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    /* Animación de aparición */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mostrar/Ocultar password */
+    .password-toggle {
+        position: relative;
+    }
+    .password-toggle i {
+        position: absolute;
+        top: 60%;
+        right: 12px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #0b0111;
+    }
+</style>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="edit-card">
+        <span class="icon-user"><i class="fas fa-user-circle"></i></span>
+        <h3>Editar Perfil</h3>
+        <form method="post">
+            {% csrf_token %} 
+            {% for field in form %}
+            <div class="mb-3 password-toggle">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if "password" in field.name %}
+                <i class="fas fa-eye toggle-password"></i>
+                {% endif %}
+                {% if field.errors %}
+                <div class="text-danger small mt-1">
+                    {{ field.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="button-group">
+                <button class="btn btn-custom btn-update" type="submit">Actualizar</button>
+                <a href="{% url 'home_view' %}" class="btn btn-custom btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Mostrar/Ocultar password
+    const toggleIcons = document.querySelectorAll('.toggle-password');
+    toggleIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            const input = icon.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+</script>
+
+{% endblock %}

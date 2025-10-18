@@ -1,0 +1,102 @@
+{% include 'base.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Borrar Plan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+      color: #fff;
+      backdrop-filter: blur(6px);
+      padding: 30px 40px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .card h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .card p {
+      font-size: 1rem;
+      margin-bottom: 30px;
+      color: #ddd;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #4CAF50, #81C784);
+      border: none;
+      transition: all 0.3s ease;
+      border-radius: 25px;
+      padding: 10px 35px;
+      font-weight: 600;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #45a049, #66bb6a);
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(15, 228, 25, 0.7);
+    }
+
+    .btn-danger {
+      background: #d63031;
+      border: none;
+      transition: all 0.3s ease;
+      border-radius: 25px;
+      padding: 10px 35px;
+      font-weight: 600;
+    }
+
+    .btn-danger:hover {
+      background: #ff3b3b;
+      transform: translateY(-2px);
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Borrar Profesor</h1>
+    <p>¿Esta seguro de borrar el Profesor <b>{{profesor.nombre}}</b>?</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="btn-container">
+        <button type="submit" class="btn btn-success">Aceptar</button>
+        <a href="/profesor/ProfesorLista" class="btn btn-danger">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>
+{% endblock %}
+

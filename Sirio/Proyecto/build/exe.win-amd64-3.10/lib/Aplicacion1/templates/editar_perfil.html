@@ -1,0 +1,83 @@
+{% include 'admin_nav.html' %}
+{% include 'base.html' %} 
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+{% block content %}         
+<style>
+    body {
+        min-height: 100vh;
+        background:linear-gradient(rgba(24, 2, 27, 0.8), rgba(0 6 193 / 30%));
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn.custom-btn2 {
+        background-color: rgb(216, 33, 33);
+        width: 60%;
+        height: 60%;
+    }
+   
+
+    /* Estilo cuando el cursor está sobre el botón Borrar */
+    .btn.custom-btn2:hover {
+        background-color:  #f80000;
+        
+    }
+    .centered-cell {
+        
+        
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center; /* Centra verticalmente */
+        height: 100%; /* Asegura que la celda use todo el alto disponible */    
+    }
+    .bg-gd-sea {
+    background-color: rgba(0, 0, 0, 0.7); /* Negro translúcido */
+    color: #fff; /* Texto blanco */ 
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+    }
+    .button-container {
+    display: flex;               /* Usar flexbox */
+    justify-content: center;     /* Centrar horizontalmente */
+    gap: 10px;                   /* Espaciado entre los botones */
+    margin-top: 15px;            /* Separación del formulario */ 
+    }
+
+</style>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <!-- Card con sombra y bordes redondeados -->
+    <div class="card shadow-lg p-4 w-100" style="max-width: 500px;">
+        <!-- Fondo gradiente -->
+        <div class="card-body bg-gd-sea text-white">
+            <h3 class="text-center fw-bold mb-4">Editar Perfil</h3>
+            
+            <form method="post">
+                {% csrf_token %} 
+                <!-- Iterar sobre los campos del formulario -->
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label fw-semibold text-secondary">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ field.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="text-center">
+                    <button class="btn btn-success btn-lg rounded-pill px-5 mt-3" type="submit">
+                        Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>    
+    </div>
+</div>
+{% endblock %}
