@@ -26,15 +26,75 @@
 </head>
 <body>
     <style>
+         .h1{
+            color: #ffffff;
+        }
+        /* General */
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
-            display: flex;
-            flex-direction: column;
+            background: linear-gradient(135deg, rgba(45,0,60,0.95), rgba(15,5,100,0.85));
             font-family: 'Segoe UI', Roboto, sans-serif;
             color: #ffffff;
             margin: 0;
         }
+        /* estilos de las tablas */
+         /* Centrado de celdas */
+        .centered-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .table-responsive {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        .table th, .table td {
+            border: none;
+            
+        }
+
+        .table th {
+            background-color: #111;
+            color: #f8f8f8;
+            
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Cabecera de la tabla */
+        .table thead th {
+            background-color: #111;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 2px solid #8a2be2;
+            box-shadow: 0 2px 6px rgba(138, 43, 226, 0.3);
+            text-align: center;
+        }
+
+        .tabla-redondeada {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+        
+            .tabla-container {
+            position: relative; /* base para la botonera */ 
+        }
+
+        .botonera-superior {
+            position: absolute;
+            top: 10px;      /* distancia desde la parte superior de la tabla */
+            right: 10px;    /* distancia desde el borde derecho de la tabla */
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        /* --------------------------------------------------------- */
 
         .btn.custom-btn2 {
             background-color: rgb(216, 33, 33);
@@ -96,14 +156,15 @@
 
     </style>
 
-
-<div class="container mt-3"> 
+ 
+<div class="container mt-4 tabla-container position-relative"> 
     <h1>Pagos</h1>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover rounded"> 
+    <div class="table-responsive tabla-redondeada">
+        <table class="table table-striped table-hover mb-0"> 
             <thead> 
                 <tr> 
                     <th>Nombre</th> 
+                    <th>DNI</th>
                     <th>Monto Pagado</th>
                     <th>Fecha del Pago</th> 
                     
@@ -113,6 +174,7 @@
                 {% for pago in pagos %}
                 <tr>
                     <td>{{ pago.socio.Nombre }}</td>
+                    <td>{{ pago.socio.Dni }}</td>
                     <td>${{ pago.monto|floatformat:2|intcomma }}</td>
                     <td>{{ pago.fecha_pago }}</td>
                 </tr>

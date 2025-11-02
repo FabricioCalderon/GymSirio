@@ -128,14 +128,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Configuración de archivos estáticos
 STATIC_URL = '/static/'  # URL base para archivos estáticos
-
 # Directorio donde se almacenarán los archivos estáticos cuando se ejecuten
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 # Directorio donde colocarás tus archivos estáticos (CSS, JS, imágenes)
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Confirma que tu carpeta está aquí
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]  # Confirma que tu carpeta está aquí]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -31,16 +31,34 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 {% if error == "no" %}
 <script>
-    alert('Logged In Successfully');
-    window.location.href = "{% url 'home_view' %}";
+    Swal.fire({
+        title: 'Inicio de sesión exitoso 🎉',
+        text: 'Bienvenido al sistema.',
+        icon: 'success',
+        confirmButtonColor: '#4CAF50',
+        confirmButtonText: 'Continuar'
+    }).then(() => {
+        window.location.href = "{% url 'home_view' %}";
+    });
 </script>
+
 {% elif error == "yes" %}
 <script>
-    alert('Invalid Credentials, Please Try Again');
+    Swal.fire({
+        title: 'Credenciales inválidas ❌',
+        text: 'Verificá tu usuario y contraseña e intentá nuevamente.',
+        icon: 'error',
+        confirmButtonColor: '#e53935',
+        confirmButtonText: 'Reintentar'
+    });
 </script>
 {% endif %}
+
 
 <!-- JS para mostrar/ocultar contraseña -->
 <script>

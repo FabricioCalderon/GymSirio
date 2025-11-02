@@ -53,27 +53,37 @@
             flex-direction: column;
             font-family: 'Segoe UI', Roboto, sans-serif;
             color: #ffffff;
-            margin: 0;
+            margin: 0; 
         }
 
-        /* Estilo general de la tarjeta */
-        .card {
-            background: rgba(0, 0, 0, 0.8);
+        /* Card general */
+        .card.socios-card {
+            background-color: rgba(0, 0, 0, 0.75);
             border-radius: 15px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-            color: #fff;
-            backdrop-filter: blur(6px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
         }
 
-        .card-body h3 {
-            color: #ffffff;;
-            font-weight: bold;
+        /* Card header */
+        .card.socios-card h3 {
+            color: #ffffff;
+            font-weight: 700;
             margin-bottom: 25px;
         }
 
-        /* Inputs y selects */
-        input, select, textarea {
-            background-color: rgba(255, 255, 255, 0.1) !important;
+        /* Labels en blanco */
+        .card.socios-card label {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        /* Inputs */
+        .card.socios-card input,
+        .card.socios-card select,
+        .card.socios-card textarea {
+           background-color: rgba(255, 255, 255, 0.1) !important;
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff !important;
             border-radius: 8px;
@@ -82,10 +92,9 @@
             transition: 0.3s;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: #bb86fc;
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 8px rgba(187, 134, 252, 0.6);
+        .card.socios-card input::placeholder,
+        .card.socios-card textarea::placeholder {
+            color: #ccc;
         }
 
         /* Botones */
@@ -131,12 +140,9 @@
 
 
 <div class="container vh-100 d-flex justify-content-center align-items-center">
-    <!-- Card con sombra y bordes redondeados -->
-    <div class="card shadow-lg p-4 w-100" style="max-width: 500px;">
-        <!-- Fondo gradiente -->
-        <div class="card-body bg-gd-sea text-white">
+       
+        <div class="card socios-card">
             <h3 class="text-center fw-bold mb-4">Profesor</h3>
-
 
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -153,7 +159,7 @@
                 </div>
             </form>
         </div>
-    </div>  
+      
 </div>
 
 

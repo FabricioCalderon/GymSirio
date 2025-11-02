@@ -16,47 +16,142 @@
 </head>
 <style>
     body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
-            display: flex;
-            flex-direction: column;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            color: #ffffff;
-            margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
+        display: flex;
+        flex-direction: column;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        color: #ffffff;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
     }
 
     .form-container {
         width: 100%;
-        max-width: 550px;
+        max-width: 480px; /* 🔹 más angosto */
         position: relative;
     }
 
-    /* Estilo para el popup de mensaje centrado */
-    #mensajePopup {
-        display: none;
-        position: absolute;
-        top: 10px; /* Distancia del mensaje desde la parte superior del formulario */
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px;
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        z-index: 1050;
-        font-weight: bold;
+    .card {
+        background:#ffffff;
+        border: 1px solid rgba(155, 77, 255, 0.2);
+        border-radius: 16px;
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .card-header {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border-top-left-radius: 16px !important;
+        border-top-right-radius: 16px !important;
+        padding: 10px 15px; /* 🔹 más bajo */
+    }
+
+    .card-header h2 {
+        font-size: 1.2rem; /* 🔹 más compacto */
+        font-weight: 600;
+        margin: 0;
     }
 
     .card-body {
         position: relative;
+        padding: 15px; /* 🔹 menos espacio interno */
     }
+
+    /* ===== Input general ===== */
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .input-group-text {
+        font-size: 1.2rem !important;
+        padding: 6px 10px;
+    }
+
+    .form-control {
+        border-radius: 10px !important;
+        font-size: 0.9rem;
+        padding: 6px 10px;
+        height: 38px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #9b4dff;
+        box-shadow: 0 0 8px rgba(155, 77, 255, 0.4);
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    /* ===== Botón ===== */
+    .btn-success {
+        border: none;
+        border-radius: 30px;
+        background: linear-gradient(135deg, #28a745, #66bb6a);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 6px 16px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #34d058, #85e085);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+    }
+
+    /* ===== Popup mensaje ===== */
+    #mensajePopup {
+        display: none;
+        position: absolute;
+        top: 8px; /* 🔹 más cerca del borde superior */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        width: 90%;
+        max-width: 350px;
+        text-align: center;
+        border-radius: 8px;
+        color: white;
+        font-size: 15px;
+        z-index: 1050;
+        font-weight: bold;
+    }
+
+    /* ===== Placeholder visible ===== */
     #dni::placeholder {
-        color: black; /* Cambia el color del texto del placeholder */
-        opacity: 1; /* Asegura que el color sea completamente visible */
+        color: black;
+        opacity: 1;
+    }
+
+    /* ===== Ajuste responsivo ===== */
+    @media (max-height: 700px) {
+        body {
+            padding-top: 20px;
+        }
+        .card {
+            transform: scale(0.95);
+        }
+    }
+
+    @media (max-width: 500px) {
+        .card {
+            max-width: 95%;
+        }
+        .card-header h2 {
+            font-size: 1.1rem;
+        }
     }
 </style>
+
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-80">
         <div class="card shadow-lg w-100 form-container">

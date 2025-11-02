@@ -18,77 +18,119 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
 </head>
 
-<style>
-    body {
+
+<body> 
+    <style>
+        body {
             min-height: 100vh;
             background: linear-gradient(135deg, rgba(45, 0, 60, 0.95), rgba(15, 5, 100, 0.85));
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             font-family: 'Segoe UI', Roboto, sans-serif;
             color: #ffffff;
             margin: 0;
+            padding-top: 40px; /* 💡 separa del borde superior */
         }
 
-    .btn.custom-btn2 {
-        background-color: rgb(216, 33, 33);
-        width: 60%;
-        height: 60%;
-    }
-   
+        .card {
+            background: #ffffff;
+            border: 1px solid rgba(155, 77, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4); 
+            transition: all 0.3s ease;
+            color: #fff;
+        }
 
-    /* Estilo cuando el cursor está sobre el botón Borrar */
-    .btn.custom-btn2:hover {
-        background-color:  #f80000;
-        
-    }
-    .centered-cell {
-        
-        
-        justify-content: center; /* Centra horizontalmente */
-        align-items: center; /* Centra verticalmente */
-        height: 100%; /* Asegura que la celda use todo el alto disponible */
-    }
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(155, 77, 255, 0.3);
+            transform: translateY(-3px);
+        }
 
-    .mensaje-popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgba(0, 0, 0, 0.9);
-        color: white;
-        padding: 20px 40px;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        display: none;
-        z-index: 99999; /* Asegura que esté siempre por encima */
-        text-align: center;
-        max-width: 80%;
-    }
+        .card-header {
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border-top-left-radius: 16px !important;
+            border-top-right-radius: 16px !important;
+            box-shadow: 0 4px 12px rgba(37, 117, 252, 0.4);
+        }
 
-    #dni::placeholder {
-        color: black; /* Cambia el color del texto del placeholder */
-        opacity: 1; /* Asegura que el color sea completamente visible */
-    }
-</style>
-<body>
+        .card-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group label {
+            color: #ddd;
+            font-weight: 600;
+        }
+
+        .input-group-text {
+            border: none;
+            background: transparent;
+        }
+
+        .form-control {
+            border-radius: 12px !important;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #9b4dff;
+            box-shadow: 0 0 10px rgba(155, 77, 255, 0.4);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Botón principal */
+        .btn-success {
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #28a745, #66bb6a);
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #34d058, #85e085);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Popup */
+        .mensaje-popup {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 99999;
+            text-align: center;
+            max-width: 80%;
+        }
+    </style>
+
     <div id="mensajePopup" class="mensaje-popup"></div>
 
     <div class="container d-flex justify-content-center align-items-center vh-100" style="margin-top: -25px;">
-        <div class="card shadow-lg w-100" style="max-width: 600px; border-radius: 20px; animation: fadeIn 1s ease-in; min-height: 90vh;">
-            <div class="card-header text-white text-center fw-bold py-3" 
-                style="background: linear-gradient(45deg, #007bff, #0056b3); border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                
-                 <!-- Logo de usuario en la esquina superior izquierda con estilo personalizado y tamaño más grande -->
-                <!-- <div class="position-absolute top-0 start-0 ms-3 mt-3">
-                    <i class="fas fa-user-circle" style="font-size: 3rem; color: black;"></i>
-                </div> -->
-                
+        <div class="card shadow-lg w-100" style="max-width: 550px; border-radius: 20px; animation: fadeIn 1s ease-in; min-height: 80vh;">
+            <!-- <div class="card-header text-white text-center fw-bold py-3" 
                 <h2 class="mb-0 d-flex align-items-center justify-content-center fs-3">
                     <i class="fas fa-clipboard-list me-2"></i> Registro de Asistencia
                 </h2>
-            </div>
+            </div> -->
             <div class="card-body">
                 <form id="asistenciaForm">
                     
@@ -100,7 +142,7 @@
                                 <i class="fas fa-id-card"></i>
                             </span>
                             <input type="text" id="dni" name="dni" class="form-control form-control-lg" required 
-                                placeholder="Ingrese su DNI" 
+                                placeholder="INGRESE SU DNI" 
                                 autocomplete="off"
                                 style="border-color: #007bff; background-color: #6da1f0; color: #070707; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); transition: all 0.3s ease;">
                         </div>
